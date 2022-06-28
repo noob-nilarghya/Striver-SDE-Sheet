@@ -1,0 +1,5 @@
+
+Differences btw Floyd and Dijstra Algo:
+ 1) Dijstra is useful when min distance from ONE source node is needed while Floyd is used for all node pairs.
+ 2) TC of Dijstra is- O(E log V) but when used for all nodes it becomes O(V3 log V) while of Floyd is O(V3)
+ 3) Floyd can work for negative edges(no negative cycles) but Dijstra can't.
