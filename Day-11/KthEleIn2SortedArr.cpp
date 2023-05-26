@@ -6,7 +6,7 @@ int ninjaAndLadoos(vector<int> &a, vector<int> &b, int m, int n, int k) {
     if(a.size() > b.size()){ return ninjaAndLadoos(b, a, n, m, k); } 
     int totalSize=m+n;
     int leftPartSize=k;
-    int low=max(0,k-n); int high=min(m,k); // as [a.size()<=b.size()], so m has to be <= leftPartSize, thats why I take high=m
+    int low=max(0,k-n); int high=min(m,k);
     
     while(low<=high){
         int cut1=low+(high-low)/2; int cut2=leftPartSize-cut1;
