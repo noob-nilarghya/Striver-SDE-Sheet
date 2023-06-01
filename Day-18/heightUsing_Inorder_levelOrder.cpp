@@ -1,4 +1,6 @@
 //                    code Studio --> [ IMP QUESTION ]
+
+// Less optimised. TC: O(N^2)
 #include <bits/stdc++.h>
 
 int helper(vector<int>& inOrder, int inS, int inE, vector<int>& levelOrder, int levS, int levE){
@@ -38,6 +40,67 @@ int helper(vector<int>& inOrder, int inS, int inE, vector<int>& levelOrder, int 
 int heightOfTheTree(vector<int>& inOrder, vector<int>& levelOrder, int N){
 	return helper(inOrder, 0, N-1, levelOrder, 0, N-1);
 }
+
+
+
+
+
+// MOST OPTIMISED: TC:O(N)
+// Basically try to traverse in level order with the help of level order array. 
+// While traversing, maintain start and end of inOrder index of the subtree you are currently in.
+#include <bits/stdc++.h>
+
+class Temp {
+public:
+    int height; // height of node [root ka height 0, leaf ka height is maximum]
+    int leftIndex; // startIndex of subtree headed by node 
+    int rightIndex; // endIndex of subtree headed by node 
+    Temp(int h, int li, int ri) {
+        height = h;
+        leftIndex = li;
+        rightIndex = ri;
+    }
+};
+
+int heightOfTheTree(vector<int>& inorder, vector<int>& levelOrder, int N){
+    int maxHeight = 0;
+    queue<Temp> q;
+
+    Temp temp(0, 0, N - 1);
+    q.push(temp);
+    
+    unordered_map<int, int> map; // {ele, inOrderIndex}
+    for(int i = 0;i < N; i++) {
+        map[inorder[i]] = i;
+    }
+
+    for(int i = 0;i < N; i++) {
+        Temp temp = q.front();
+        q.pop();
+
+        maxHeight = max(temp.height, maxHeight);
+
+        int li = temp.leftIndex;
+        int ri = temp.rightIndex;
+        int rootIndex;
+
+        rootIndex = map[levelOrder[i]];
+
+        if(rootIndex - 1 >= li) { // has left subtree
+            Temp leftSubTree(temp.height + 1, li, rootIndex - 1);
+            q.push(leftSubTree);
+        }
+
+        if(rootIndex + 1 <= ri) { // has right subtree
+            Temp rightSubTree(temp.height + 1, rootIndex + 1, ri);
+            q.push(rightSubTree);
+        }
+    }
+
+    return maxHeight;
+}
+
+
 
 //--------------------------------------------------------------------------------------------------
 // LeetCode -> Normal recursive algo to find height
